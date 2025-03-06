@@ -1,0 +1,12 @@
+{
+    "name": "aptitude-learning-platform",
+    "version": "1.0.0",
+    "description": "Aptitude Learning Platform Frontend",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "^4.18.2"
+    }
+} 
