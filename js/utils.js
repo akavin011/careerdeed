@@ -127,4 +127,55 @@ export const storage = {
             console.error('Error removing from localStorage:', e);
         }
     }
+};
+
+// Analytics tracking
+export const trackPageViews = () => {
+    // Track page views
+    const trackPageView = () => {
+        const path = window.location.pathname;
+        console.log(`Page view: ${path}`);
+        
+        // In a real application, you would send this data to an analytics service
+        // Example: sendToAnalyticsService('pageView', { path });
+    };
+    
+    // Track initial page view
+    trackPageView();
+    
+    // Track page views on navigation
+    const originalPushState = window.history.pushState;
+    window.history.pushState = function() {
+        originalPushState.apply(this, arguments);
+        trackPageView();
+    };
+    
+    // Track page views on browser navigation (back/forward)
+    window.addEventListener('popstate', trackPageView);
+};
+
+// Track user events
+export const trackEvent = (category, action, label = null, value = null) => {
+    console.log(`Event: ${category} - ${action}${label ? ` - ${label}` : ''}${value ? ` - ${value}` : ''}`);
+    
+    // In a real application, you would send this data to an analytics service
+    // Example: sendToAnalyticsService('event', { category, action, label, value });
+};
+
+// Calculate user progress
+export const calculateProgress = (completedItems, totalItems) => {
+    if (!totalItems) return 0;
+    return Math.round((completedItems / totalItems) * 100);
+};
+
+// Generate a unique ID
+export const generateId = () => {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
+};
+
+// Format time (seconds to MM:SS)
+export const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
 }; 

@@ -86,8 +86,20 @@ const Dashboard = () => {
                         <!-- Welcome Section -->
                         <div class="card mb-4">
                             <div class="card-body">
-                                <h4>Welcome back, ${user.name}! 👋</h4>
-                                <p>Continue your learning journey and track your progress.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h4>Welcome back, ${user.name}! 👋</h4>
+                                        <p class="mb-0">Continue your learning journey and track your progress.</p>
+                                    </div>
+                                    <div class="search-container" style="width: 300px;">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Search courses...">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         

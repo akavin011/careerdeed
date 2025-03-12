@@ -1,39 +1,79 @@
 .dashboard-page {
     background-color: var(--light-gray);
     min-height: 100vh;
+    padding-top: 2rem;
+    padding-bottom: 4rem;
 }
 
 .achievement-item {
     background-color: rgba(52, 152, 219, 0.1);
-    padding: 1rem;
+    padding: 1.5rem;
     border-radius: var(--border-radius);
-    transition: transform 0.2s ease;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    border-left: 4px solid var(--secondary-color);
 }
 
 .achievement-item:hover {
-    transform: translateX(5px);
+    transform: translateX(10px);
+    background-color: rgba(52, 152, 219, 0.15);
 }
 
 .achievement-icon {
-    width: 50px;
-    height: 50px;
+    width: 60px;
+    height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: rgba(52, 152, 219, 0.2);
     border-radius: 50%;
+    margin-right: 1.25rem;
+    font-size: 1.5rem;
+    color: var(--secondary-color);
 }
 
 .test-item {
-    padding: 1rem;
+    padding: 1.5rem;
     border-left: 4px solid var(--secondary-color);
     background-color: rgba(52, 152, 219, 0.1);
     border-radius: 0 var(--border-radius) var(--border-radius) 0;
-    transition: transform 0.2s ease;
+    transition: var(--transition);
+    margin-bottom: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .test-item:hover {
-    transform: translateX(5px);
+    transform: translateX(10px);
+    background-color: rgba(52, 152, 219, 0.15);
+}
+
+.test-info h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+}
+
+.test-info p {
+    color: var(--text-light);
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+.test-score {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    background-color: rgba(52, 152, 219, 0.2);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .progress {
@@ -71,14 +111,430 @@
 .welcome-card {
     background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
     color: white;
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 150px;
+    height: 150px;
+    background-image: url('https://img.freepik.com/free-vector/abstract-background-with-squares_23-2148995948.jpg');
+    background-size: cover;
+    opacity: 0.1;
+    border-radius: 50%;
+    transform: translate(30%, -30%);
+}
+
+.welcome-card h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.welcome-card p {
+    opacity: 0.9;
+    margin-bottom: 1.5rem;
+    max-width: 80%;
+}
+
+.welcome-card .btn {
+    background-color: white;
+    color: var(--primary-color);
+    font-weight: 500;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    transition: var(--transition);
+}
+
+.welcome-card .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
 .course-progress-card {
     border-left: 4px solid var(--secondary-color);
 }
 
+.chart-container {
+    height: 300px;
+    margin-bottom: 2rem;
+}
+
+.activity-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(52, 152, 219, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    color: var(--secondary-color);
+    flex-shrink: 0;
+}
+
+.activity-content h5 {
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+}
+
+.activity-content p {
+    color: var(--text-light);
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+.activity-time {
+    color: var(--text-light);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+/* Dashboard Styles */
+.dashboard-container {
+    padding: 1rem 0 3rem;
+}
+
+.dashboard-sidebar {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 1.75rem;
+    height: 100%;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+    position: sticky;
+    top: 100px;
+}
+
+.user-profile {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.user-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 1rem;
+    border: 3px solid var(--secondary-color);
+    padding: 3px;
+    background-color: var(--card-bg);
+}
+
+.user-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.user-email {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.dashboard-sidebar .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.dashboard-sidebar .nav-link {
+    color: var(--text-color);
+    padding: 0.9rem 1.25rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 0.25rem;
+    transition: var(--transition);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.dashboard-sidebar .nav-link:hover,
+.dashboard-sidebar .nav-link.active {
+    background-color: var(--secondary-color);
+    color: white;
+    transform: translateX(5px);
+}
+
+.dashboard-sidebar .nav-link i {
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+    width: 20px;
+    text-align: center;
+}
+
+.dashboard-main {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.dashboard-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 0;
+}
+
+.dashboard-subtitle {
+    color: var(--text-light);
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.stat-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+    border-left: 4px solid var(--secondary-color);
+    display: flex;
+    align-items: center;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: rgba(52, 152, 219, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+}
+
+.stat-info h3 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+    color: var(--text-color);
+}
+
+.stat-info p {
+    color: var(--text-light);
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+.progress-card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+}
+
+.progress-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.progress-card h3 {
+    font-size: 1.35rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-color);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+
+.progress-card h3 i {
+    margin-right: 0.75rem;
+    color: var(--secondary-color);
+}
+
+.progress-bar {
+    background-color: var(--secondary-color);
+    height: 10px;
+    border-radius: 5px;
+}
+
+.progress {
+    height: 10px;
+    border-radius: 5px;
+    background-color: rgba(0,0,0,0.05);
+    margin-bottom: 0.5rem;
+}
+
+.progress-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.progress-label span {
+    font-weight: 500;
+}
+
+.course-progress-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.course-progress-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.course-progress-item:hover {
+    background-color: rgba(52, 152, 219, 0.05);
+    padding-left: 1rem;
+    padding-right: 1rem;
+    margin-left: -1rem;
+    margin-right: -1rem;
+    border-radius: var(--border-radius);
+}
+
+.course-progress-item:last-child {
+    border-bottom: none;
+}
+
+.course-progress-info {
+    display: flex;
+    align-items: center;
+}
+
+.course-progress-image {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--border-radius);
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.course-progress-details h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.course-progress-details p {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    margin-bottom: 0;
+}
+
+.course-progress-status {
+    font-weight: 600;
+    color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+}
+
+.course-progress-status i {
+    margin-left: 0.5rem;
+}
+
+.achievement-info h4 {
+    font-size: 1.1rem;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+}
+
+.achievement-info p {
+    color: var(--text-light);
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 992px) {
+    .dashboard-sidebar {
+        position: static;
+        margin-bottom: 2rem;
+    }
+    
+    .stats-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .dashboard-sidebar {
         margin-bottom: 2rem;
+    }
+    
+    .dashboard-main {
+        padding: 1.5rem;
+    }
+    
+    .stats-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .welcome-card p {
+        max-width: 100%;
+    }
+    
+    .course-progress-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .course-progress-image {
+        margin-bottom: 1rem;
+        margin-right: 0;
     }
 } 

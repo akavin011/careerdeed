@@ -1,10 +1,20 @@
 import { Router } from './router.js';
 import { Dashboard } from './dashboard.js';
 import { CourseDetails } from './course-details.js';
+import { Quiz, QuizList } from './quiz.js';
+import { PracticeTest, PracticeTestList } from './practice-test.js';
 import { validateForm, showToast, storage } from './utils.js';
+
+// Check for saved theme preference or default to 'light'
+const currentTheme = localStorage.getItem('theme') || 'light';
+document.documentElement.setAttribute('data-theme', currentTheme);
 
 // Navigation Component
 const Navigation = () => {
+    // Check if user is logged in
+    const user = storage.get('user');
+    const isLoggedIn = !!user;
+    
     return `
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container">
@@ -18,13 +28,33 @@ const Navigation = () => {
                             <a class="nav-link" href="/courses" data-link>Courses</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/categories" data-link>Categories</a>
+                            <a class="nav-link" href="/practice-tests" data-link>Practice Tests</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/about" data-link>About</a>
                         </li>
+                        ${isLoggedIn ? `
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    ${user.name}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="/dashboard" data-link>Dashboard</a></li>
+                                    <li><a class="dropdown-item" href="/profile" data-link>Profile</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#" id="logout-btn">Logout</a></li>
+                                </ul>
+                            </li>
+                        ` : `
+                            <li class="nav-item">
+                                <a class="nav-link btn btn-outline-light ms-2" href="/login" data-link>Login</a>
+                            </li>
+                        `}
                         <li class="nav-item">
-                            <a class="nav-link btn btn-outline-light ms-2" href="/login" data-link>Login</a>
+                            <div class="dark-mode-toggle" id="darkModeToggle">
+                                <i class="${localStorage.getItem('theme') === 'dark' ? 'fas fa-sun' : 'fas fa-moon'}"></i>
+                                <span>${localStorage.getItem('theme') === 'dark' ? 'Light' : 'Dark'} Mode</span>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -128,7 +158,7 @@ const PopularCoursesSection = () => {
         {
             title: "Quantitative Aptitude Mastery",
             description: "Master mathematical concepts for competitive exams",
-            image: "https://img.freepik.com/free-vector/realistic-math-chalkboard-background_23-2148154055.jpg",
+            image: "https://img.freepik.com/free-photo/math-formulas-blackboard_144627-43435.jpg",
             category: "Mathematics",
             price: "8000",
             instructor: {
@@ -140,7 +170,7 @@ const PopularCoursesSection = () => {
         {
             title: "Logical Reasoning Pro",
             description: "Enhance your logical thinking and problem-solving",
-            image: "https://img.freepik.com/free-vector/brain-mechanism-gears-human-head-brainstorm-idea-generation_107791-8061.jpg",
+            image: "https://img.freepik.com/free-photo/business-planning-concept-side-view-businessman-thinking-about-business-plan_176474-9655.jpg",
             category: "Logic",
             price: "8000",
             instructor: {
@@ -152,7 +182,7 @@ const PopularCoursesSection = () => {
         {
             title: "Verbal Ability Excellence",
             description: "Improve your verbal reasoning and comprehension",
-            image: "https://img.freepik.com/free-vector/hand-drawn-literature-concept_23-2149153543.jpg",
+            image: "https://img.freepik.com/free-photo/english-books-shelf_23-2147778124.jpg",
             category: "Verbal",
             price: "8000",
             instructor: {
@@ -267,9 +297,11 @@ const LoginPage = () => {
                                     <label for="password" class="form-label">Password</label>
                                     <input type="password" class="form-control" id="password" required>
                                 </div>
-                                <div class="mb-3 form-check">
-                                    <input type="checkbox" class="form-check-input" id="remember">
-                                    <label class="form-check-label" for="remember">Remember me</label>
+                                <div class="mb-4">
+                                    <div class="form-check mt-2">
+                                        <input type="checkbox" class="form-check-input" id="remember">
+                                        <label class="form-check-label" for="remember">Remember me</label>
+                                    </div>
                                 </div>
                                 <button type="submit" class="btn btn-primary w-100">Login</button>
                             </form>
@@ -359,6 +391,275 @@ const RegisterPage = () => {
     `;
 };
 
+// About Page Component
+const AboutPage = () => {
+    return `
+        ${Navigation()}
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h1 class="mb-4">About CareerDeed</h1>
+                    <div class="card mb-5">
+                        <div class="card-body">
+                            <h2 class="mb-3">Our Mission</h2>
+                            <p>At CareerDeed, we are dedicated to empowering individuals with the skills and knowledge needed to excel in competitive exams and professional environments. Our mission is to provide high-quality aptitude training that is accessible, engaging, and effective.</p>
+                            
+                            <h2 class="mb-3 mt-4">Our Approach</h2>
+                            <p>We believe in a comprehensive approach to aptitude training that combines theoretical knowledge with practical application. Our courses are designed to help you understand concepts deeply and apply them effectively in real-world scenarios.</p>
+                            
+                            <div class="row mt-4">
+                                <div class="col-md-4 text-center mb-4">
+                                    <div class="about-feature">
+                                        <i class="fas fa-book-reader fa-3x mb-3"></i>
+                                        <h4>Structured Learning</h4>
+                                        <p>Carefully designed curriculum that builds skills progressively</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-center mb-4">
+                                    <div class="about-feature">
+                                        <i class="fas fa-tasks fa-3x mb-3"></i>
+                                        <h4>Practice-Oriented</h4>
+                                        <p>Extensive practice questions and mock tests</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 text-center mb-4">
+                                    <div class="about-feature">
+                                        <i class="fas fa-chart-line fa-3x mb-3"></i>
+                                        <h4>Progress Tracking</h4>
+                                        <p>Detailed analytics to monitor your improvement</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card mb-5">
+                        <div class="card-body">
+                            <h2 class="mb-4">Meet Our Instructor</h2>
+                            <div class="row">
+                                <div class="col-md-4 text-center">
+                                    <img src="https://img.freepik.com/free-photo/portrait-experienced-indian-businessman_23-2149383810.jpg" alt="Mohan Rajamani" class="img-fluid rounded-circle mb-3" style="max-width: 200px;">
+                                </div>
+                                <div class="col-md-8">
+                                    <h3>Mohan Rajamani</h3>
+                                    <p class="text-muted">Lead Instructor & Aptitude Expert</p>
+                                    <p>With over 15 years of experience in teaching aptitude for competitive exams, Mohan Rajamani has helped thousands of students achieve their career goals. His teaching methodology focuses on building strong fundamentals and developing problem-solving skills.</p>
+                                    <p>Mohan specializes in Quantitative Aptitude, Logical Reasoning, and Verbal Ability. He has authored several books on aptitude training and is known for his ability to simplify complex concepts.</p>
+                                    <div class="instructor-stats d-flex flex-wrap mt-3">
+                                        <div class="me-4 mb-2">
+                                            <strong>15+</strong> Years Teaching
+                                        </div>
+                                        <div class="me-4 mb-2">
+                                            <strong>10,000+</strong> Students Taught
+                                        </div>
+                                        <div class="me-4 mb-2">
+                                            <strong>4.9/5</strong> Average Rating
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="mb-4">Contact Us</h2>
+                            <p>Have questions or need more information? We're here to help!</p>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h4><i class="fas fa-envelope me-2"></i> Email</h4>
+                                    <p>contact@careerdeed.com</p>
+                                    <h4><i class="fas fa-phone me-2"></i> Phone</h4>
+                                    <p>+91 (XXX) XXX-XXXX</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h4><i class="fas fa-map-marker-alt me-2"></i> Address</h4>
+                                    <p>123 Education Street<br>Chennai, Tamil Nadu<br>India - 600001</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        ${Footer()}
+    `;
+};
+
+// Courses Page Component
+const CoursesPage = () => {
+    const courses = [
+        {
+            id: 1,
+            title: "Quantitative Aptitude Mastery",
+            description: "Master mathematical concepts for competitive exams with comprehensive coverage of arithmetic, algebra, geometry, and more.",
+            image: "https://img.freepik.com/free-photo/math-formulas-blackboard_144627-43435.jpg",
+            category: "Mathematics",
+            price: "8000",
+            rating: 4.8,
+            students: 1250,
+            instructor: {
+                name: "Mohan Rajamani",
+                avatar: "https://img.freepik.com/free-photo/portrait-experienced-indian-businessman_23-2149383810.jpg",
+                designation: "Lead Instructor"
+            }
+        },
+        {
+            id: 2,
+            title: "Logical Reasoning Pro",
+            description: "Enhance your logical thinking and problem-solving skills for competitive exams and interviews.",
+            image: "https://img.freepik.com/free-photo/business-planning-concept-side-view-businessman-thinking-about-business-plan_176474-9655.jpg",
+            category: "Logic",
+            price: "8000",
+            rating: 4.7,
+            students: 980,
+            instructor: {
+                name: "Mohan Rajamani",
+                avatar: "https://img.freepik.com/free-photo/portrait-experienced-indian-businessman_23-2149383810.jpg",
+                designation: "Lead Instructor"
+            }
+        },
+        {
+            id: 3,
+            title: "Verbal Ability Excellence",
+            description: "Improve your verbal reasoning and comprehension skills for competitive exams and professional growth.",
+            image: "https://img.freepik.com/free-photo/english-books-shelf_23-2147778124.jpg",
+            category: "Verbal",
+            price: "8000",
+            rating: 4.6,
+            students: 850,
+            instructor: {
+                name: "Mohan Rajamani",
+                avatar: "https://img.freepik.com/free-photo/portrait-experienced-indian-businessman_23-2149383810.jpg",
+                designation: "Lead Instructor"
+            }
+        },
+        {
+            id: 4,
+            title: "Data Interpretation Masterclass",
+            description: "Learn to analyze and interpret complex data sets, charts, and graphs for competitive exams.",
+            image: "https://img.freepik.com/free-photo/business-person-analyzing-growing-graph_53876-23303.jpg",
+            category: "Data Analysis",
+            price: "8000",
+            rating: 4.5,
+            students: 720,
+            instructor: {
+                name: "Mohan Rajamani",
+                avatar: "https://img.freepik.com/free-photo/portrait-experienced-indian-businessman_23-2149383810.jpg",
+                designation: "Lead Instructor"
+            }
+        },
+        {
+            id: 5,
+            title: "Aptitude Test Preparation Bundle",
+            description: "Comprehensive bundle covering all aspects of aptitude testing for competitive exams and job interviews.",
+            image: "https://img.freepik.com/free-photo/close-up-hand-taking-notes-studying_23-2148888827.jpg",
+            category: "Bundle",
+            price: "12000",
+            rating: 4.9,
+            students: 1500,
+            instructor: {
+                name: "Mohan Rajamani",
+                avatar: "https://img.freepik.com/free-photo/portrait-experienced-indian-businessman_23-2149383810.jpg",
+                designation: "Lead Instructor"
+            }
+        },
+        {
+            id: 6,
+            title: "Interview Preparation Strategies",
+            description: "Master the art of interviews with strategies for aptitude tests, technical questions, and HR rounds.",
+            image: "https://img.freepik.com/free-photo/two-businesspeople-having-meeting_23-2149300535.jpg",
+            category: "Career",
+            price: "8000",
+            rating: 4.7,
+            students: 950,
+            instructor: {
+                name: "Mohan Rajamani",
+                avatar: "https://img.freepik.com/free-photo/portrait-experienced-indian-businessman_23-2149383810.jpg",
+                designation: "Lead Instructor"
+            }
+        }
+    ];
+
+    const renderCourseCard = (course) => {
+        return `
+            <div class="col-md-4 mb-4">
+                <div class="card course-card h-100">
+                    <img src="${course.image}" class="card-img-top course-image" alt="${course.title}">
+                    <div class="card-body d-flex flex-column">
+                        <span class="category-badge mb-2">${course.category}</span>
+                        <h5 class="card-title">${course.title}</h5>
+                        <p class="card-text">${course.description}</p>
+                        <div class="mt-auto">
+                            <div class="instructor-info mb-2">
+                                <img src="${course.instructor.avatar}" class="instructor-avatar" alt="${course.instructor.name}">
+                                <span>${course.instructor.name}</span>
+                            </div>
+                            <div class="course-meta mb-3">
+                                <span><i class="fas fa-star text-warning"></i> ${course.rating}</span>
+                                <span><i class="fas fa-user"></i> ${course.students} students</span>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="price-tag">₹${course.price}</span>
+                                <a href="/course/${course.id}" class="btn btn-primary" data-link>View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+    };
+
+    return `
+        ${Navigation()}
+        <div class="courses-header py-5">
+            <div class="container">
+                <h1 class="mb-4">Explore Our Courses</h1>
+                <p class="lead">Discover our comprehensive range of aptitude training courses designed to help you excel in competitive exams and job interviews.</p>
+                
+                <div class="filters mb-4">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Search courses..." id="courseSearchInput">
+                                <button class="btn btn-primary" type="button" id="searchButton">
+                                    <i class="fas fa-search"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-md-end mt-3 mt-md-0">
+                                <select class="form-select me-2" style="max-width: 150px;" id="categoryFilter">
+                                    <option value="all">All Categories</option>
+                                    <option value="Mathematics">Mathematics</option>
+                                    <option value="Logic">Logic</option>
+                                    <option value="Verbal">Verbal</option>
+                                    <option value="Data Analysis">Data Analysis</option>
+                                    <option value="Bundle">Bundle</option>
+                                    <option value="Career">Career</option>
+                                </select>
+                                <select class="form-select" style="max-width: 150px;" id="sortFilter">
+                                    <option value="popular">Most Popular</option>
+                                    <option value="rating">Highest Rated</option>
+                                    <option value="newest">Newest</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="container py-5">
+            <div class="row" id="coursesContainer">
+                ${courses.map(course => renderCourseCard(course)).join('')}
+            </div>
+        </div>
+        
+        ${Footer()}
+    `;
+};
+
 // Define routes
 const routes = [
     { path: '/', component: HomePage },
@@ -366,6 +667,12 @@ const routes = [
     { path: '/course/:id', component: CourseDetails },
     { path: '/login', component: LoginPage },
     { path: '/register', component: RegisterPage },
+    { path: '/about', component: AboutPage },
+    { path: '/courses', component: CoursesPage },
+    { path: '/quiz', component: Quiz },
+    { path: '/quizzes', component: QuizList },
+    { path: '/practice-test', component: PracticeTest },
+    { path: '/practice-tests', component: PracticeTestList },
     { path: '*', component: () => '<h1>404 - Page Not Found</h1>' }
 ];
 
@@ -378,7 +685,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const styles = [
         'styles/main.css',
         'styles/dashboard.css',
-        'styles/course-details.css'
+        'styles/course-details.css',
+        'styles/quiz-test.css'
     ];
     
     styles.forEach(style => {
@@ -387,4 +695,43 @@ document.addEventListener('DOMContentLoaded', () => {
         link.href = style;
         document.head.appendChild(link);
     });
+    
+    // Initialize router
+    router.init();
+    
+    // Set up dark mode toggle functionality
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('#darkModeToggle')) {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update the icon and text
+            const toggleIcon = e.target.closest('#darkModeToggle').querySelector('i');
+            const toggleText = e.target.closest('#darkModeToggle').querySelector('span');
+            
+            if (newTheme === 'dark') {
+                toggleIcon.classList.replace('fas fa-moon', 'fas fa-sun');
+                toggleText.textContent = 'Light Mode';
+            } else {
+                toggleIcon.classList.replace('fas fa-sun', 'fas fa-moon');
+                toggleText.textContent = 'Dark Mode';
+            }
+        }
+        
+        // Handle logout
+        if (e.target.id === 'logout-btn') {
+            e.preventDefault();
+            storage.remove('user');
+            showToast('Logged out successfully', 'success');
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1000);
+        }
+    });
+    
+    // Add analytics tracking
+    trackPageViews();
 }); 
